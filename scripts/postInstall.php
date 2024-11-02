@@ -1,8 +1,8 @@
 <?php
 
 // Ensure this script is being run in a Composer context
-if (!defined('COMPOSER_BINARY')) {
-    exit('This script must be run through Composer');
+if (PHP_SAPI !== 'cli') {
+    exit('This script must be run through the CLI (Composer)');
 }
 
 echo "Running LaceKit post-installation tasks...\n";
