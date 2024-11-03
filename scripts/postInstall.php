@@ -68,6 +68,18 @@ foreach ($foldersToInstall as $folder) {
     }
 }
 
+// add start script
+$rootComposerJson = getcwd() . '/composer.json';
+$composerData = json_decode(file_get_contents($rootComposerJson), true);
+
+if (!isset($composerData['scripts']['start'])) {
+    $composerData['scripts']['start'] = 'php -S localhost:8000';
+
+    file_put_contents($rootComposerJson, json_encode($composerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    echo "Added 'start' script to the root composer.json";
+}
+
+
 // Helper function to copy directories recursively
 function copyDirectory($source, $destination) {
     if (!is_dir($destination)) {
