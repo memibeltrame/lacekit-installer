@@ -12,7 +12,8 @@ $lacekitPath = $vendorDir . '/memibeltrame/lacekit';
 // First copy specific files to root
 $filesToCopy = [
     'index.php' => 'index.php',
-    'functions_controller.php' => 'functions_controller.php'
+    'functions_controller.php' => 'functions_controller.php',
+    'testpage.php' => 'testpage.php'
 ];
 
 foreach ($filesToCopy as $sourceFile => $destFile) {
@@ -76,7 +77,7 @@ if (!isset($composerData['scripts']['start'])) {
     $composerData['scripts']['start'] = 'php -S localhost:8000';
 
     file_put_contents($rootComposerJson, json_encode($composerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-    echo "Added 'start' script to the root composer.json";
+    echo "Added 'start' script to the root composer.json\n";
 }
 
 
@@ -104,4 +105,4 @@ function copyDirectory($source, $destination) {
     closedir($dir);
 }
 
-echo "LaceKit installation completed successfully!\n"; 
+echo "🍾 LaceKit installation completed successfully!\n"; 
