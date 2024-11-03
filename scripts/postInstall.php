@@ -1,10 +1,5 @@
 <?php
 
-// Ensure this script is being run in a Composer context
-if (PHP_SAPI !== 'cli') {
-    exit('This script must be run through the CLI (Composer)');
-}
-
 echo "Running LaceKit post-installation tasks...\n";
 
 // Get the vendor directory path
@@ -95,12 +90,6 @@ function copyDirectory($source, $destination) {
         }
     }
     closedir($dir);
-}
-
-// Create cache directory if needed
-if (!is_dir($projectRoot . '/lacekit-cache')) {
-    mkdir($projectRoot . '/lacekit-cache', 0755, true);
-    echo "Created cache directory\n";
 }
 
 echo "LaceKit installation completed successfully!\n"; 
