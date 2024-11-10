@@ -39,7 +39,7 @@ foreach ($filesToCopy as $sourceFile => $destFile) {
 }
 
 // Then copy folders as before
-$foldersToInstall = ['core', 'snippets', 'assets'];
+$foldersToInstall = ['core', 'snippets', 'assets', 'docs'];
 
 foreach ($foldersToInstall as $folder) {
     $sourcePath = $lacekitPath . '/' . $folder;
@@ -74,7 +74,7 @@ $rootComposerJson = getcwd() . '/composer.json';
 $composerData = json_decode(file_get_contents($rootComposerJson), true);
 
 if (!isset($composerData['scripts']['start'])) {
-    $composerData['scripts']['start'] = 'php -S localhost:8000';
+    $composerData['scripts']['start'] = array( 'Composer\\Config::disableProcessTimeout', 'php -S localhost:8000' );
 
     file_put_contents($rootComposerJson, json_encode($composerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     echo "Added 'start' script to the root composer.json\n";
