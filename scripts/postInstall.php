@@ -24,18 +24,19 @@ foreach ($filesToCopy as $sourceFile => $destFile) {
         echo "Warning: Source file '$sourceFile' not found in LaceKit package\n";
         continue;
     }
-
-    echo "Copying $sourceFile to project root...\n";
-    
-    try {
-        if (copy($sourcePath, $destPath)) {
-            echo "Successfully copied $sourceFile\n";
-        } else {
-            echo "Error: Failed to copy $sourceFile\n";
+    if(!file_exists($destPath)):
+        echo "Copying $sourceFile to project root...\n";
+        
+        try {
+            if (copy($sourcePath, $destPath)) {
+                echo "Successfully copied $sourceFile\n";
+            } else {
+                echo "Error: Failed to copy $sourceFile\n";
+            }
+        } catch (Exception $e) {
+            echo "Error copying $sourceFile: " . $e->getMessage() . "\n";
         }
-    } catch (Exception $e) {
-        echo "Error copying $sourceFile: " . $e->getMessage() . "\n";
-    }
+    endif;
 }
 
 // Then copy folders as before
@@ -61,7 +62,7 @@ foreach ($foldersToInstall as $folder) {
         }
     } else {
         if(in_array($folder, $foldersToUpdate )){
-            if(!rmdir($destinationPath)){
+            if(!removeDir($destinationPath)){
                 echo "Error: Failed to delete directory '$destinationPath'\n";
                 continue;
             } else {
@@ -118,4 +119,17 @@ function copyDirectory($source, $destination) {
     closedir($dir);
 }
 
+function removeDir(string $dir): void {
+    $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+    $files = new RecursiveIteratorIterator($it,
+                 RecursiveIteratorIterator::CHILD_FIRST);
+    foreach($files as $file) {
+        if ($file->isDir()){
+            rmdir($file->getPathname());
+        } else {
+            unlink($file->getPathname());
+        }
+    }
+    rmdir($dir);
+}
 echo "🍾 LaceKit installation completed successfully!\n"; 
