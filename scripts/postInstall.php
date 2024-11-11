@@ -40,6 +40,7 @@ foreach ($filesToCopy as $sourceFile => $destFile) {
 
 // Then copy folders as before
 $foldersToInstall = ['core', 'snippets', 'assets', 'docs'];
+$foldersToUpdate = ['core', 'docs'];
 
 foreach ($foldersToInstall as $folder) {
     $sourcePath = $lacekitPath . '/' . $folder;
@@ -57,6 +58,18 @@ foreach ($foldersToInstall as $folder) {
         if (!mkdir($destinationPath, 0755, true)) {
             echo "Error: Failed to create directory '$destinationPath'\n";
             continue;
+        }
+    } else {
+        if(in_array($folder, $foldersToUpdate )){
+            if(!rmdir($destinationPath)){
+                echo "Error: Failed to delete directory '$destinationPath'\n";
+                continue;
+            } else {
+                if (!mkdir($destinationPath, 0755, true)) {
+                    echo "Error: Failed to create directory '$destinationPath'\n";
+                    continue;
+                }
+            }
         }
     }
 
