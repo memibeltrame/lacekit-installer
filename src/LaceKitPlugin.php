@@ -43,18 +43,27 @@ class LaceKitPlugin implements PluginInterface, EventSubscriberInterface, Capabl
     public function onPostInstall(Event $event)
     {
         // Execute post-install script
-        $this->runScript();
+        $this->runPostInstallScript();
     }
 
     public function onPostUpdate(Event $event)
     {
         // Execute post-update script
-        $this->runScript();
+        $this->runPostUpdateScript();
     }
 
-    private function runScript()
+    private function runPostInstallScript()
     {
         $scriptPath = __DIR__ . '/../scripts/postInstall.php';
+        if (file_exists($scriptPath)) {
+            system("php " . escapeshellarg($scriptPath));
+        } else {
+            echo "Script not found: $scriptPath\n";
+        }
+    }
+    private function runPostUpdateScript()
+    {
+        $scriptPath = __DIR__ . '/../scripts/postUpdate.php';
         if (file_exists($scriptPath)) {
             system("php " . escapeshellarg($scriptPath));
         } else {
