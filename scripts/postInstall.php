@@ -52,7 +52,7 @@ foreach ($foldersToInstall as $folder) {
         continue;
     }
 
-    echo "Installing $folder folder...\n";
+   
     
     // // Create destination directory if it doesn't exist
     // if (!is_dir($destinationPath)) {
