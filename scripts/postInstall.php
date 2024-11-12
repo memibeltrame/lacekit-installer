@@ -54,33 +54,45 @@ foreach ($foldersToInstall as $folder) {
 
     echo "Installing $folder folder...\n";
     
-    // Create destination directory if it doesn't exist
+    // // Create destination directory if it doesn't exist
+    // if (!is_dir($destinationPath)) {
+    //     if (!mkdir($destinationPath, 0755, true)) {
+    //         echo "Error: Failed to create directory '$destinationPath'\n";
+    //         continue;
+    //     }
+    // } else {
+    //     if(in_array($folder, $foldersToUpdate )){
+    //         if(!removeDir($destinationPath)){
+    //             echo "Error: Failed to delete directory '$destinationPath'\n";
+    //             continue;
+    //         } else {
+    //             if (!mkdir($destinationPath, 0755, true)) {
+    //                 echo "Error: Failed to create directory '$destinationPath'\n";
+    //                 continue;
+    //             }
+    //         }
+    //     }
+    // }
+    // check if destination folder exists
     if (!is_dir($destinationPath)) {
-        if (!mkdir($destinationPath, 0755, true)) {
-            echo "Error: Failed to create directory '$destinationPath'\n";
-            continue;
+    // Copy directory contents recursively
+        try {
+            copyDirectory($sourcePath, $destinationPath);
+            echo "Successfully installed $folder\n";
+        } catch (Exception $e) {
+            echo "Error copying $folder: " . $e->getMessage() . "\n";
         }
     } else {
         if(in_array($folder, $foldersToUpdate )){
-            if(!removeDir($destinationPath)){
-                echo "Error: Failed to delete directory '$destinationPath'\n";
-                continue;
-            } else {
-                if (!mkdir($destinationPath, 0755, true)) {
-                    echo "Error: Failed to create directory '$destinationPath'\n";
-                    continue;
-                }
+            try {
+                copyDirectory($sourcePath, $destinationPath);
+                echo "Successfully installed $folder\n";
+            } catch (Exception $e) {
+                echo "Error copying $folder: " . $e->getMessage() . "\n";
             }
         }
     }
 
-    // Copy directory contents recursively
-    try {
-        copyDirectory($sourcePath, $destinationPath);
-        echo "Successfully installed $folder\n";
-    } catch (Exception $e) {
-        echo "Error copying $folder: " . $e->getMessage() . "\n";
-    }
 }
 
 // add start script
